@@ -1,9 +1,8 @@
 .progress-brutal {
 	height: 1.5rem;
 	border: 1px solid var(--clay-inset-border);
-	border-radius: var(--clay-radius-pill);
+	border-radius: var(--clay-radius-md);
 	background: var(--clay-surface);
-	box-shadow: none;
 	overflow: hidden;
 }
 

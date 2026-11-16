@@ -2,6 +2,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
+import SmoothScroll from "./components/layout/SmoothScroll.tsx";
 import { ToastProvider } from "./components/ui/toast/ToastProvider.tsx";
 import { AuthTokenProvider } from "./hooks/useAuthToken.tsx";
 import { TargetPercentageProvider } from "./hooks/useTargetPercentage.tsx";
@@ -20,7 +21,9 @@ createRoot(rootElement).render(
 				<AuthTokenProvider>
 					<TargetPercentageProvider>
 						<ToastProvider>
-							<App />
+							<SmoothScroll>
+								<App />
+							</SmoothScroll>
 						</ToastProvider>
 					</TargetPercentageProvider>
 				</AuthTokenProvider>

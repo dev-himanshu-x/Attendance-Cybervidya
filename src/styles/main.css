@@ -26,19 +26,41 @@
    and the token overrides below to that instead of its own default. */
 @custom-variant dark (&:is([data-theme="dark"] *));
 
+html {
+	-webkit-text-size-adjust: 100%;
+}
+
 body {
 	margin: 0;
 	background-color: var(--body-bg);
 	color: var(--body-color);
 	font-family: var(--font-sans);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	font-family: var(--font-serif);
+	font-weight: 400;
+	letter-spacing: -0.01em;
+	line-height: 1.15;
 }
 
 a {
 	color: var(--link-color);
+	text-underline-offset: 3px;
+	transition: color 0.2s ease;
 }
 
 a:hover {
-	color: color-mix(in srgb, var(--link-color) 85%, black);
+	color: color-mix(in srgb, var(--link-color) 80%, var(--clay-text));
+}
+
+::selection {
+	background: color-mix(in srgb, var(--clay-accent) 25%, transparent);
 }
 
 .app-shell {
@@ -55,39 +77,139 @@ a:hover {
 	justify-content: center;
 }
 
+.page {
+	width: 100%;
+	max-width: var(--page-max);
+	margin-inline: auto;
+	padding-inline: 1.5rem;
+}
+
+@media (min-width: 640px) {
+	.page {
+		padding-inline: 2rem;
+	}
+}
+
+@media (min-width: 1024px) {
+	.page {
+		padding-inline: 3rem;
+	}
+}
+
 .text-brutal {
-	font-family: var(--font-sans);
-	letter-spacing: 0.01em;
 	color: var(--clay-text);
 }
 
+.site-header {
+	position: sticky;
+	top: 0;
+	z-index: 40;
+	border-bottom: 1px solid transparent;
+	transition:
+		background-color 0.4s ease,
+		border-color 0.4s ease,
+		backdrop-filter 0.4s ease;
+}
+
+.site-header--scrolled {
+	background: color-mix(in srgb, var(--clay-surface-alt) 72%, transparent);
+	border-bottom-color: var(--clay-divider);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+}
+
+.site-header__inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.75rem;
+	height: 4rem;
+}
+
+.site-logo {
+	font-family: var(--font-serif);
+	font-size: 1.5rem;
+	letter-spacing: -0.01em;
+	color: var(--clay-text);
+	line-height: 1;
+}
+
+.site-logo__accent {
+	font-style: italic;
+	color: var(--clay-muted);
+}
+
+.section {
+	padding-block: 2rem;
+	border-top: 1px solid var(--clay-divider);
+}
+
+.section.pb-0 {
+	padding-bottom: 0;
+}
+
+.section__title {
+	margin: 0 0 1.25rem;
+	font-size: 1.5rem;
+	color: var(--clay-text);
+}
+
+.eyebrow {
+	font-size: 0.75rem;
+	letter-spacing: 0.04em;
+	color: var(--clay-muted);
+}
+
+.icon-btn,
 .theme-toggle-btn {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 2.75rem;
-	height: 2.75rem;
-	border: 1px solid var(--clay-raised-border);
-	border-radius: var(--clay-radius-pill);
-	background: var(--clay-surface-alt);
-	color: var(--clay-text);
+	width: 2.25rem;
+	height: 2.25rem;
+	border: none;
+	border-radius: var(--clay-radius-sm);
+	background: transparent;
+	color: var(--clay-muted);
 	cursor: pointer;
 	flex-shrink: 0;
 	transition:
-		transform 0.2s ease,
-		background-color 0.2s ease;
+		background-color 0.2s ease,
+		color 0.2s ease;
 }
 
+.icon-btn:hover,
 .theme-toggle-btn:hover {
-	transform: translateY(-2px);
-	background: var(--clay-surface);
+	background: var(--clay-tint);
+	color: var(--clay-text);
 }
 
 .theme-toggle--floating {
 	position: fixed;
-	top: 1rem;
-	right: 1rem;
+	top: 0.75rem;
+	right: 0.75rem;
 	z-index: 30;
+}
+
+.reveal {
+	opacity: 0;
+	transform: translateY(14px);
+	transition:
+		opacity 0.5s ease,
+		transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal--visible {
+	opacity: 1;
+	transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.reveal {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
 }
 
 @theme inline {
@@ -198,4 +320,32 @@ a:hover {
 	--sidebar-accent-foreground: oklch(0.985 0 0);
 	--sidebar-border: oklch(1 0 0 / 10%);
 	--sidebar-ring: oklch(0.556 0 0);
+}
+
+.footer-link {
+	background: none;
+	border: none;
+	padding: 0;
+	font: inherit;
+	color: var(--clay-muted);
+	text-decoration: none;
+	cursor: pointer;
+	transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+	color: var(--clay-text);
+}
+
+html.lenis,
+html.lenis body {
+	height: auto;
+}
+
+.lenis.lenis-smooth {
+	scroll-behavior: auto;
+}
+
+.lenis.lenis-stopped {
+	overflow: hidden;
 }

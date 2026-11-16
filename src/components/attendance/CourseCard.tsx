@@ -45,7 +45,7 @@ function CourseCard({ onViewDaywiseAttendance, course }: CourseCardProps) {
 	const primaryComponent = componentStats[0]?.component;
 
 	return (
-		<Card>
+		<Card className={isOnTarget ? undefined : "card-panel--danger"}>
 			<div className="flex justify-between items-start gap-2 mb-4">
 				<h3 className="text-base font-bold mb-0 text-brutal">
 					{course.courseName}
@@ -74,20 +74,10 @@ function CourseCard({ onViewDaywiseAttendance, course }: CourseCardProps) {
 				<div className="flex-1 min-w-0 flex flex-col gap-2">
 					{componentStats.map(({ component, present, total, percent }) => (
 						<div key={component.componentName} className="flex flex-col gap-1">
-							<span className="text-xs font-semibold text-brutal truncate">
-								{component.componentName}
-							</span>
-							<div className="flex items-center gap-2">
-								<div className="course-card__segmented-bar flex-1">
-									<div
-										className="course-card__segment--present"
-										style={{ flex: `${present} 0 0` }}
-									/>
-									<div
-										className="course-card__segment--absent"
-										style={{ flex: `${Math.max(0, total - present)} 0 0` }}
-									/>
-								</div>
+							<div className="flex items-baseline justify-between gap-2">
+								<span className="text-xs font-semibold text-brutal truncate">
+									{component.componentName}
+								</span>
 								<span
 									className={`text-xs font-bold shrink-0 ${
 										percent >= targetPercentage
@@ -98,6 +88,16 @@ function CourseCard({ onViewDaywiseAttendance, course }: CourseCardProps) {
 									{present}/{total}
 								</span>
 							</div>
+							<div className="course-card__segmented-bar">
+								<div
+									className="course-card__segment--present"
+									style={{ flex: `${present} 0 0` }}
+								/>
+								<div
+									className="course-card__segment--absent"
+									style={{ flex: `${Math.max(0, total - present)} 0 0` }}
+								/>
+							</div>
 						</div>
 					))}
 				</div>
@@ -105,9 +105,7 @@ function CourseCard({ onViewDaywiseAttendance, course }: CourseCardProps) {
 
 			<div
 				className={`flex items-center gap-2 text-sm mb-3 ${
-					isOnTarget
-						? "text-[var(--status-good)]"
-						: "text-[var(--clay-warning)]"
+					isOnTarget ? "text-[var(--status-good)]" : "text-[var(--clay-danger)]"
 				}`}
 			>
 				{isOnTarget ? <CheckCircle size={16} /> : <AlertTriangle size={16} />}

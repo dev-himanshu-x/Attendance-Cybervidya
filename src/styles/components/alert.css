@@ -31,7 +31,7 @@
 .alert-callout {
 	padding: 1rem;
 	border-radius: var(--clay-radius-md);
-	border: 1px solid var(--clay-raised-border);
+	border: 1px solid transparent;
 }
 
 .alert-callout--danger {

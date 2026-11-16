@@ -17,6 +17,28 @@ interface TargetPercentageContextValue {
 	setTargetPercentage: (value: number) => void;
 }
 
+const TARGET_STORAGE_KEY = "targetPercentage";
+
+function clampTarget(value: number): number {
+	return Math.min(
+		MAX_TARGET_PERCENTAGE,
+		Math.max(MIN_TARGET_PERCENTAGE, value),
+	);
+}
+
+function getInitialTarget(): number {
+	try {
+		const stored = localStorage.getItem(TARGET_STORAGE_KEY);
+		if (stored === null) return DEFAULT_TARGET_PERCENTAGE;
+		const parsed = Number(stored);
+		return Number.isFinite(parsed)
+			? clampTarget(Math.round(parsed))
+			: DEFAULT_TARGET_PERCENTAGE;
+	} catch {
+		return DEFAULT_TARGET_PERCENTAGE;
+	}
+}
+
 const TargetPercentageContext = createContext<
 	TargetPercentageContextValue | undefined
 >(undefined);
@@ -26,16 +48,17 @@ export function TargetPercentageProvider({
 }: {
 	children: ReactNode;
 }) {
-	const [targetPercentage, setTargetPercentageState] = useState<number>(
-		DEFAULT_TARGET_PERCENTAGE,
-	);
+	const [targetPercentage, setTargetPercentageState] =
+		useState<number>(getInitialTarget);
 
 	const setTargetPercentage = useCallback((value: number) => {
-		const clamped = Math.min(
-			MAX_TARGET_PERCENTAGE,
-			Math.max(MIN_TARGET_PERCENTAGE, value),
-		);
+		const clamped = clampTarget(value);
 		setTargetPercentageState(clamped);
+		try {
+			localStorage.setItem(TARGET_STORAGE_KEY, String(clamped));
+		} catch {
+			// Storage unavailable (e.g. private browsing) — the value still applies for this visit.
+		}
 	}, []);
 
 	const value = useMemo(
