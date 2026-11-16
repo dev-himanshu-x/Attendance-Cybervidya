@@ -24,6 +24,12 @@ function formatInputDateString(date: Date): string {
 	return `${year}-${month}-${day}`;
 }
 
+// The schedule API formats dates with toISOString(), which shifts a local
+// midnight back a day in timezones ahead of UTC (e.g. India) — noon stays on the same date.
+function atNoon(date: Date): Date {
+	return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 12);
+}
+
 function formatPickerDate(value: string): string {
 	if (!value) return "…";
 	return parseInputDateString(value).toLocaleDateString("en-US", {
@@ -260,11 +266,29 @@ export default function Projections({
 		[missedClasses, updateProjectedAttendance],
 	);
 
+	const setClassesMissed = useCallback(
+		(classes: ClassEntry[], missed: boolean) => {
+			const nextSet = new Set(missedClasses);
+			for (const cls of classes) {
+				if (missed === nextSet.has(cls.start)) continue;
+				if (missed) nextSet.add(cls.start);
+				else nextSet.delete(cls.start);
+				updateProjectedAttendance(cls.courseCode, missed ? "add" : "subtract");
+			}
+			setMissedClasses(nextSet);
+		},
+		[missedClasses, updateProjectedAttendance],
+	);
+
 	const fetchClassesForRange = useCallback(
 		async (start: Date, end: Date) => {
 			if (token) {
 				try {
-					const entries = await fetchScheduleClasses(token, start, end);
+					const entries = await fetchScheduleClasses(
+						token,
+						atNoon(start),
+						atNoon(end),
+					);
 					const directClasses = entries.filter((c) => c.type === "CLASS");
 					if (directClasses.length > 0) {
 						return {
@@ -352,6 +376,20 @@ export default function Projections({
 			(a, b) => a.date.getTime() - b.date.getTime(),
 		);
 	}, [rangeClasses]);
+
+	const selectableRangeClasses = useMemo(
+		() =>
+			groupedRangeClasses
+				.filter((group) => group.date >= today)
+				.flatMap((group) => group.classes),
+		[groupedRangeClasses, today],
+	);
+	const selectedRangeCount = selectableRangeClasses.filter((cls) =>
+		missedClasses.has(cls.start),
+	).length;
+	const areAllRangeClassesSelected =
+		selectableRangeClasses.length > 0 &&
+		selectedRangeCount === selectableRangeClasses.length;
 
 	const renderSlotCells = useCallback(
 		(classes: ClassEntry[], slots: typeof morningSlots, isPastDay: boolean) => {
@@ -585,18 +623,57 @@ export default function Projections({
 										Projected from your regular weekly timetable
 									</span>
 								)}
+								{selectableRangeClasses.length > 0 && (
+									<div className="flex items-center justify-between gap-2 mb-4">
+										<span className="text-xs text-[var(--clay-muted)]">
+											{selectedRangeCount} of {selectableRangeClasses.length}{" "}
+											selected
+										</span>
+										<button
+											type="button"
+											className="btn-brutal btn-brutal--outline"
+											onClick={() =>
+												setClassesMissed(
+													selectableRangeClasses,
+													!areAllRangeClassesSelected,
+												)
+											}
+										>
+											{areAllRangeClassesSelected ? "Clear all" : "Select all"}
+										</button>
+									</div>
+								)}
 								<div className="flex flex-col gap-4">
 									{groupedRangeClasses.map((group) => {
 										const isPastDay = group.date < today;
+										const isDayFullySelected = group.classes.every((cls) =>
+											missedClasses.has(cls.start),
+										);
 										return (
 											<div key={group.label + group.date.toISOString()}>
-												<p
-													className={`text-brutal text-sm font-bold mb-2 ${
-														isPastDay ? "opacity-50" : ""
-													}`}
-												>
-													{group.label}
-												</p>
+												<div className="flex items-center justify-between gap-2 mb-2">
+													<p
+														className={`text-brutal text-sm font-bold mb-0 ${
+															isPastDay ? "opacity-50" : ""
+														}`}
+													>
+														{group.label}
+													</p>
+													{!isPastDay && (
+														<button
+															type="button"
+															className="btn-brutal btn-brutal--plain text-xs"
+															onClick={() =>
+																setClassesMissed(
+																	group.classes,
+																	!isDayFullySelected,
+																)
+															}
+														>
+															{isDayFullySelected ? "Clear day" : "Select day"}
+														</button>
+													)}
+												</div>
 												<div className="flex flex-col gap-2">
 													{group.classes.map((cls) => {
 														const isMissed = missedClasses.has(cls.start);
