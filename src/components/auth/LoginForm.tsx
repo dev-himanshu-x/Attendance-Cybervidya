@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { ArrowRight, ShieldCheck } from "lucide-react";
-import { useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { ArrowRight, Loader2, ShieldCheck } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { getServerErrorReason } from "../../api/auth";
 import { useAuthToken } from "../../hooks/useAuthToken";
@@ -20,10 +20,14 @@ import {
 } from "../../types/constants";
 import InstallExtensionPage from "../docs/InstallExtensionPage";
 import Button from "../ui/Button";
+import OtpInput from "../ui/OtpInput";
 import PasswordInput from "../ui/PasswordInput";
 
 const SOURCE_CODE_URL =
 	"https://github.com/dev-himanshu-x/Attendance-cybervidya";
+
+const canAutoFocus =
+	typeof window !== "undefined" && window.matchMedia("(pointer: fine)").matches;
 
 const credentialsSchema = z.object({
 	username: z.string().min(1, "University roll number is required"),
@@ -75,6 +79,14 @@ function LoginForm() {
 		resolver: zodResolver(otpSchema),
 		defaultValues: { otp: "" },
 	});
+
+	const { setFocus: focusCredentialsField } = credentialsForm;
+
+	useEffect(() => {
+		if (canAutoFocus && step === "credentials" && !savedUsername) {
+			focusCredentialsField("username");
+		}
+	}, [step, savedUsername, focusCredentialsField]);
 
 	function handleAuthError(
 		err: unknown,
@@ -219,6 +231,7 @@ function LoginForm() {
 									id="username"
 									type="text"
 									placeholder="20240XXXXXXXXXX"
+									autoComplete="username"
 									className="form-control-brutal"
 									{...credentialsForm.register("username")}
 								/>
@@ -232,7 +245,10 @@ function LoginForm() {
 								<label htmlFor="password" className="form-label-brutal">
 									Password
 								</label>
-								<PasswordInput {...credentialsForm.register("password")} />
+								<PasswordInput
+									autoComplete="current-password"
+									{...credentialsForm.register("password")}
+								/>
 								{credentialsForm.formState.errors.password && (
 									<p className="form-error">
 										{credentialsForm.formState.errors.password.message}
@@ -265,8 +281,12 @@ function LoginForm() {
 							)}
 
 							<Button type="submit" variant="primary" disabled={isLoading}>
-								{isLoading ? "Loading..." : "Continue"}
-								{!isLoading && <ArrowRight size={16} />}
+								Continue
+								{isLoading ? (
+									<Loader2 size={16} className="animate-spin" />
+								) : (
+									<ArrowRight size={16} />
+								)}
 							</Button>
 						</form>
 					) : (
@@ -275,15 +295,17 @@ function LoginForm() {
 								<label htmlFor="otp" className="form-label-brutal">
 									One-time password (OTP)
 								</label>
-								<input
-									id="otp"
-									type="text"
-									inputMode="numeric"
-									autoComplete="one-time-code"
-									maxLength={6}
-									placeholder="XXXXXX"
-									className="form-control-brutal"
-									{...otpForm.register("otp")}
+								<Controller
+									control={otpForm.control}
+									name="otp"
+									render={({ field }) => (
+										<OtpInput
+											value={field.value}
+											onChange={field.onChange}
+											invalid={!!otpForm.formState.errors.otp}
+											autoFocus={canAutoFocus}
+										/>
+									)}
 								/>
 								{otpForm.formState.errors.otp && (
 									<p className="form-error">
@@ -302,8 +324,12 @@ function LoginForm() {
 							)}
 
 							<Button type="submit" variant="primary" disabled={isLoading}>
-								{isLoading ? "Verifying..." : "Verify OTP"}
-								{!isLoading && <ArrowRight size={16} />}
+								Verify OTP
+								{isLoading ? (
+									<Loader2 size={16} className="animate-spin" />
+								) : (
+									<ArrowRight size={16} />
+								)}
 							</Button>
 							<button
 								type="button"
@@ -321,14 +347,16 @@ function LoginForm() {
 				</div>
 
 				<div className="auth-card__footer">
-					Your data stays in your browser.{" "}
-					<a href={SOURCE_CODE_URL} target="_blank" rel="noopener noreferrer">
-						View source
-					</a>
-				</div>
-				<div className="auth-card__footer auth-card__footer--notice">
-					<ShieldCheck size={14} />
-					Not affiliated with KIET or CyberVidya
+					<p className="mb-1">
+						Your data stays in your browser.{" "}
+						<a href={SOURCE_CODE_URL} target="_blank" rel="noopener noreferrer">
+							View source
+						</a>
+					</p>
+					<p className="auth-card__notice mb-0">
+						<ShieldCheck size={14} />
+						Not affiliated with KIET or CyberVidya
+					</p>
 				</div>
 			</div>
 		</div>

@@ -308,14 +308,6 @@ export default function Projections({
 		setIsFetchingRange(false);
 	}, [rangeStart, rangeEnd, fetchClassesForRange]);
 
-	const handleDiwaliPreset = useCallback(() => {
-		const year = new Date().getFullYear();
-		setRangeStart(`${year}-11-05`);
-		setRangeEnd(`${year}-11-13`);
-		setRangeClasses(null);
-		setRangeError("");
-	}, []);
-
 	const selectedRange = useMemo<DateRange>(
 		() => ({
 			from: rangeStart ? parseInputDateString(rangeStart) : undefined,
@@ -435,15 +427,6 @@ export default function Projections({
 					/>
 				</div>
 				<div className="flex items-center gap-2">
-					{mode === "datewise" && (
-						<button
-							type="button"
-							onClick={handleDiwaliPreset}
-							className="btn-brutal btn-brutal--tinted"
-						>
-							Diwali Preset (5–13 Nov)
-						</button>
-					)}
 					<button
 						type="button"
 						className="btn-brutal btn-brutal--plain"

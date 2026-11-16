@@ -6,7 +6,6 @@ import {
 	MIN_TARGET_PERCENTAGE,
 } from "../../types/constants";
 import type { StudentDetails } from "../../types/response";
-import Card from "../ui/Card";
 
 interface OverallAttProps {
 	attendanceData: StudentDetails | null;
@@ -65,8 +64,8 @@ const OverallAtt = memo(function OverallAtt({
 		100;
 
 	return (
-		<Card className="mx-auto mb-6 card-panel--tight">
-			<div className="flex flex-col md:flex-row items-center gap-3">
+		<div>
+			<div className="flex flex-col sm:flex-row items-center gap-6">
 				<div
 					className="attendance-meter"
 					style={
@@ -86,9 +85,7 @@ const OverallAtt = memo(function OverallAtt({
 
 				<div className="grow w-full">
 					<div className="flex flex-wrap items-center justify-between gap-2">
-						<h1 className="text-xl font-bold text-brutal mb-0">
-							Overall Attendance
-						</h1>
+						<h2 className="section__title mb-0">Overall attendance</h2>
 						<span
 							className="status-pill"
 							style={
@@ -107,11 +104,11 @@ const OverallAtt = memo(function OverallAtt({
 						<div className="flex justify-between items-center mb-1">
 							<label
 								htmlFor="target-percentage"
-								className="text-sm font-semibold text-[var(--clay-muted)] text-brutal mb-0"
+								className="text-sm text-[var(--clay-muted)] mb-0"
 							>
 								Target attendance
 							</label>
-							<span className="text-sm font-bold text-brutal">
+							<span className="text-sm font-medium text-brutal">
 								{targetPercentage}%
 							</span>
 						</div>
@@ -131,7 +128,7 @@ const OverallAtt = memo(function OverallAtt({
 					</div>
 				</div>
 			</div>
-		</Card>
+		</div>
 	);
 });
 

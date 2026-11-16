@@ -15,27 +15,21 @@ export default function Profile({ attendanceData }: ProfileProps) {
 	if (!attendanceData) return null;
 
 	return (
-		<div className="flex flex-col sm:flex-row items-start sm:justify-between gap-2 sm:gap-4">
-			<div>
-				<h1
-					className="font-semibold mb-2 text-brutal"
-					style={{ fontSize: "1.75rem" }}
-				>
-					{getGreeting()}, {attendanceData.fullName}!
-				</h1>
-				<p className="font-semibold text-brutal mb-0">
-					{attendanceData.registrationNumber}
-				</p>
-			</div>
-			<div className="sm:text-right">
-				<p className="font-semibold text-brutal mb-1">
-					{attendanceData.branchShortName} - Section{" "}
-					{attendanceData.sectionName}
-				</p>
-				<p className="font-semibold text-brutal mb-0">
-					{attendanceData.degreeName} | Semester {attendanceData.semesterName}
-				</p>
-			</div>
+		<div className="fade-in">
+			<p className="eyebrow mb-3">{getGreeting()}</p>
+			<h1
+				className="mb-3"
+				style={{ fontSize: "clamp(2.25rem, 7vw, 3.25rem)", lineHeight: 1.05 }}
+			>
+				{attendanceData.fullName}
+			</h1>
+			<p className="text-sm text-[var(--clay-muted)] mb-0 leading-relaxed">
+				{attendanceData.registrationNumber}
+				<span className="mx-2">/</span>
+				{attendanceData.branchShortName}, Section {attendanceData.sectionName}
+				<span className="mx-2">/</span>
+				{attendanceData.degreeName}, Semester {attendanceData.semesterName}
+			</p>
 		</div>
 	);
 }

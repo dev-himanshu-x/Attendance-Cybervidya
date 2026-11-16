@@ -1,37 +1,38 @@
-/* Design tokens — single source of truth for the app's "claymorphism" look,
-   in both light and dark theme. Consumed both by the plain CSS below
+/* Design tokens — single source of truth for the app's look, in both light
+   and dark theme. The --clay-* names are kept from the earlier design so
+   existing components resolve unchanged. Consumed both by the plain CSS below
    (var(--token)) and directly from JSX via Tailwind arbitrary values, e.g.
    text-[var(--clay-muted)]. The active theme is set as data-theme="light" |
    "dark" on <html> by ThemeProvider (src/hooks/useTheme.tsx). */
 :root {
 	/* Base page tokens — breakpoints used by Tailwind utility classes in JSX
 	   match Tailwind's default scale (sm:640 md:768 lg:1024 xl:1280 2xl:1536). */
-	--body-bg: #eaf2fb; /* soft sky, solid fallback body background-color */
-	--body-color: #33415c;
-	--link-color: #3b82f6;
-	--font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+	--body-bg: #faf9f7; /* warm off-white */
+	--body-color: #1a1715;
+	--link-color: #1d4ed8;
+	--font-sans:
+		"Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", Roboto,
+		sans-serif;
+	--font-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+	--page-max: none;
 
 	/* ---- Claymorphism design tokens ---- */
-	--clay-page-gradient: linear-gradient(
-		180deg,
-		#bfe0fb 0%,
-		#dcedfb 35%,
-		#f6fafd 75%,
-		#ffffff 100%
-	);
-	--clay-surface: #eef4fb; /* base clay color things are "molded" from */
+	--clay-page-gradient: linear-gradient(var(--body-bg), var(--body-bg));
+	--clay-surface: #f0eeeb; /* quiet fill for tiles, tracks and hover rows */
 	--clay-surface-alt: #ffffff;
-	--clay-text: #33415c; /* soft navy instead of pure black */
-	--clay-muted: #7c8aa5;
+	--clay-text: #1a1715;
+	--clay-muted: #6b635a;
+	--clay-ink: #1a1715; /* solid fill for primary buttons and active states */
+	--clay-ink-contrast: #fafafa;
 
-	--clay-radius-sm: 0.9rem;
-	--clay-radius-md: 1.25rem;
-	--clay-radius-lg: 1.75rem;
-	--clay-radius-xl: 2rem;
+	--clay-radius-sm: 0.5rem;
+	--clay-radius-md: 0.75rem;
+	--clay-radius-lg: 0.75rem;
+	--clay-radius-xl: 1rem;
 	--clay-radius-pill: 999px;
 
-	--clay-accent: #3b82f6; /* soft blue accent */
-	--clay-accent-dark: #1f2937; /* charcoal used for the "today" calendar chip */
+	--clay-accent: #2563eb;
+	--clay-accent-dark: #1a1715; /* "today" chip in the calendar */
 
 	--clay-present: #86e0b8; /* softened emerald */
 	--clay-present-text: #0f9d63;
@@ -40,26 +41,22 @@
 	--clay-warning: #b8790f;
 	--clay-danger: #d1554b;
 
-	--clay-tinted-bg: #e6f0fe;
-	--clay-tinted-text: #3b82f6;
-	--clay-tinted-bg-hover: #d6e6fd;
+	--clay-tinted-bg: #e8effd;
+	--clay-tinted-text: #1d4ed8;
+	--clay-tinted-bg-hover: #d9e5fc;
 
 	--clay-highlight-bg: #f2ecfe;
 	--clay-highlight-text: #7c4fe0;
 
 	/* Hairline borders / tints — named by where they were used as Sass mixin
 	   constants, so every component's look maps 1:1 across both themes. */
-	--clay-raised-border: rgba(163, 177, 198, 0.25);
-	--clay-inset-border: rgba(163, 177, 198, 0.4);
-	--clay-divider: rgba(163, 177, 198, 0.3);
-	--clay-tint: rgba(163, 177, 198, 0.12);
-	--clay-hover-tint: #f6faff;
-	--clay-skeleton-light: #f3f7fc;
-	--clay-cell-sheen: linear-gradient(
-		180deg,
-		rgba(255, 255, 255, 0.5) 0%,
-		rgba(255, 255, 255, 0) 60%
-	);
+	--clay-raised-border: #e0ddd9;
+	--clay-inset-border: #d4d0cb;
+	--clay-divider: #e0ddd9;
+	--clay-tint: rgba(26, 23, 21, 0.05);
+	--clay-hover-tint: #f5f3f0;
+	--clay-skeleton-light: #f0eeeb;
+	--clay-cell-sheen: linear-gradient(transparent, transparent);
 	--clay-chip-bg: rgba(255, 255, 255, 0.55);
 	--modal-soft-bg: rgba(255, 255, 255, 0.9);
 
@@ -71,24 +68,20 @@
 
 /* ---- Dark theme ---- */
 :root[data-theme="dark"] {
-	--body-bg: #0b1120;
-	--body-color: #cbd5e1;
-	--link-color: #60a5fa;
+	--body-bg: #111111;
+	--body-color: #e8dcc8;
+	--link-color: #7db3fb;
 
-	--clay-page-gradient: linear-gradient(
-		180deg,
-		#0b1120 0%,
-		#0d1526 35%,
-		#10192b 75%,
-		#0b1120 100%
-	);
-	--clay-surface: #121a28;
-	--clay-surface-alt: #182132;
-	--clay-text: #e2e8f0;
-	--clay-muted: #8b96ab;
+	--clay-page-gradient: linear-gradient(var(--body-bg), var(--body-bg));
+	--clay-surface: #1f1c18;
+	--clay-surface-alt: #161412;
+	--clay-text: #e8dcc8;
+	--clay-muted: #a0998e;
+	--clay-ink: #e8dcc8;
+	--clay-ink-contrast: #111111;
 
-	--clay-accent: #60a5fa;
-	--clay-accent-dark: #60a5fa;
+	--clay-accent: #7db3fb;
+	--clay-accent-dark: #e8dcc8;
 
 	--clay-tinted-bg: rgba(59, 130, 246, 0.16);
 	--clay-tinted-text: #8ab4fd;
@@ -97,17 +90,13 @@
 	--clay-highlight-bg: rgba(124, 79, 224, 0.18);
 	--clay-highlight-text: #c3a6fb;
 
-	--clay-raised-border: rgba(255, 255, 255, 0.08);
-	--clay-inset-border: rgba(255, 255, 255, 0.14);
-	--clay-divider: rgba(255, 255, 255, 0.1);
-	--clay-tint: rgba(255, 255, 255, 0.05);
-	--clay-hover-tint: rgba(255, 255, 255, 0.04);
+	--clay-raised-border: #2a2520;
+	--clay-inset-border: #3d3429;
+	--clay-divider: #2a2520;
+	--clay-tint: rgba(232, 220, 200, 0.06);
+	--clay-hover-tint: #1a1714;
 	--clay-skeleton-light: rgba(255, 255, 255, 0.08);
-	--clay-cell-sheen: linear-gradient(
-		180deg,
-		rgba(255, 255, 255, 0.06) 0%,
-		rgba(255, 255, 255, 0) 60%
-	);
+	--clay-cell-sheen: linear-gradient(transparent, transparent);
 	--clay-chip-bg: rgba(255, 255, 255, 0.08);
-	--modal-soft-bg: rgba(20, 27, 40, 0.85);
+	--modal-soft-bg: rgba(22, 20, 18, 0.9);
 }

@@ -1,24 +1,27 @@
 .form-control-brutal {
 	display: block;
 	width: 100%;
-	padding: 0.75rem 1rem;
+	padding: 0.625rem 0.875rem;
+	font-family: var(--font-sans);
+	font-size: 0.9375rem;
 	color: var(--clay-text);
 	background: var(--clay-surface-alt);
 	border: 1px solid var(--clay-inset-border);
-	border-radius: 0.75rem;
+	border-radius: var(--clay-radius-md);
 	transition:
 		border-color 0.2s ease,
-		outline-color 0.2s ease;
+		box-shadow 0.2s ease;
 }
 
 .form-control-brutal::placeholder {
 	color: var(--clay-muted);
+	opacity: 0.8;
 }
 
 .form-control-brutal:focus {
-	outline: 3px solid color-mix(in srgb, var(--clay-accent) 20%, transparent);
-	outline-offset: 1px;
-	border-color: var(--clay-accent);
+	outline: none;
+	border-color: var(--clay-text);
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--clay-text) 10%, transparent);
 }
 
 .form-control-brutal--with-icon {
@@ -26,7 +29,7 @@
 }
 
 .form-control-brutal--with-icon-start {
-	padding-left: 2.75rem;
+	padding-left: 2.5rem;
 }
 
 .form-field {
@@ -36,7 +39,7 @@
 .form-field__icon {
 	position: absolute;
 	top: 50%;
-	left: 1rem;
+	left: 0.875rem;
 	transform: translateY(-50%);
 	color: var(--clay-muted);
 	pointer-events: none;
@@ -44,18 +47,16 @@
 }
 
 .form-control-brutal.is-invalid {
-	border-color: color-mix(in srgb, var(--clay-danger) 50%, transparent);
-	outline: 3px solid color-mix(in srgb, var(--clay-danger) 30%, transparent);
-	outline-offset: 1px;
+	border-color: var(--clay-danger);
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--clay-danger) 20%, transparent);
 }
 
 .form-label-brutal {
 	font-family: var(--font-sans);
-	letter-spacing: 0.01em;
 	color: var(--clay-text);
 	display: block;
-	font-size: 0.875rem;
-	font-weight: 600;
+	font-size: 0.8125rem;
+	font-weight: 500;
 	margin-bottom: 0.375rem;
 }
 
@@ -63,5 +64,5 @@
 	font-size: 0.75rem;
 	color: var(--clay-danger);
 	margin-top: 0.25rem;
-	font-weight: 600;
+	font-weight: 500;
 }

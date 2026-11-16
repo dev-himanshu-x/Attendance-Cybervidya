@@ -40,6 +40,7 @@ export default function Modal({
 				tabIndex={-1}
 			/>
 			<div
+				data-lenis-prevent
 				className={clsx(
 					"modal-panel",
 					variant === "soft" && "modal-panel--soft",

@@ -128,7 +128,7 @@ export default function TodayClasses({
 						<ChevronLeft size={16} />
 					</button>
 					<div className="flex flex-col items-center min-w-[8rem]">
-						<h3 className="text-base font-bold text-brutal mb-0 whitespace-nowrap">
+						<h3 className="text-brutal mb-0 whitespace-nowrap">
 							{isToday ? "Today's Classes" : formatDayLabel(selectedDate)}
 						</h3>
 						{!isToday && (
