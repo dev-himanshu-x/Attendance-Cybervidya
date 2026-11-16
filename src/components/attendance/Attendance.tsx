@@ -1,12 +1,5 @@
 import Cookies from "js-cookie";
-import {
-	CalendarDays,
-	LayoutGrid,
-	LogOut,
-	Search,
-	SearchX,
-	X,
-} from "lucide-react";
+import { CalendarDays, LayoutGrid, SearchX, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAuthToken } from "../../hooks/useAuthToken";
 import { useAttendanceQuery } from "../../queries/useAttendanceQuery";
@@ -17,9 +10,10 @@ import type {
 	AttendanceComponentInfo,
 	CourseAttendanceInfo,
 } from "../../types/response";
-import ThemeToggle from "../layout/ThemeToggle";
+import Header from "../layout/Header";
 import Button from "../ui/Button";
 import Modal from "../ui/Modal";
+import Reveal from "../ui/Reveal";
 import CalendarView from "./CalendarView";
 import CourseCard from "./CourseCard";
 import Daywise from "./Daywise";
@@ -123,42 +117,16 @@ function Attendance({
 
 	return (
 		<div className="grow flex flex-col">
-			<div className="w-full px-4 py-6 lg:px-6">
-				<div className="flex items-center justify-between gap-3 mb-6 flex-wrap">
-					<div className="auth-logo shrink-0">
-						Cyber<span className="auth-logo__accent">Vidya</span>
-					</div>
-
-					<div className="flex items-center gap-3">
-						<div className="form-field grow max-w-sm h-11">
-							<span className="form-field__icon">
-								<Search size={16} />
-							</span>
-							<input
-								type="search"
-								placeholder="Search courses..."
-								value={searchQuery}
-								onChange={(e) => onSearchChange(e.target.value)}
-								aria-label="Search courses"
-								className="form-control-brutal form-control-brutal--with-icon-start h-11"
-							/>
-						</div>
-						<ThemeToggle />
-						<button
-							type="button"
-							onClick={onLogout}
-							className="btn-brutal btn-brutal--outline shrink-0 h-11"
-						>
-							<LogOut size={14} />
-							<span className="btn-brutal__text">Logout</span>
-						</button>
-					</div>
-				</div>
-
+			<Header
+				searchQuery={searchQuery}
+				onSearchChange={onSearchChange}
+				onLogout={onLogout}
+			/>
+			<div className="page">
 				{isSearching ? (
 					<div id="search-results">
-						<h2 className="text-xl font-bold text-brutal mb-6">
-							Search results for "{trimmedSearchQuery}"
+						<h2 className="section__title">
+							Results for "{trimmedSearchQuery}"
 						</h2>
 						{filteredCourses.length === 0 ? (
 							<div className="flex flex-col items-center text-center text-[var(--clay-muted)] py-12">
@@ -171,7 +139,7 @@ function Attendance({
 								</p>
 							</div>
 						) : (
-							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+							<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
 								{filteredCourses.map((course) => (
 									<CourseCard
 										key={course.courseCode}
@@ -184,30 +152,34 @@ function Attendance({
 					</div>
 				) : (
 					<>
-						<div id="overview" className="mb-6">
+						<div id="overview" className="pt-6 pb-10">
 							<Profile attendanceData={attendanceData} />
 						</div>
 
-						<div id="attendance">
-							<OverallAtt attendanceData={attendanceData} />
-						</div>
+						<Reveal>
+							<div id="attendance" className="section">
+								<OverallAtt attendanceData={attendanceData} />
+							</div>
+						</Reveal>
 
-						<div className="mb-6">
-							<TodayClasses
-								token={token}
-								studentId={studentId}
-								attendanceData={attendanceData}
-								schedule={scheduleQuery.data ?? []}
-								isLoading={scheduleQuery.isLoading}
-								isProjectionVisible={isProjectionVisible}
-								onToggleProjection={() =>
-									setIsProjectionVisible((prev) => !prev)
-								}
-							/>
-						</div>
+						<Reveal>
+							<div className="py-4">
+								<TodayClasses
+									token={token}
+									studentId={studentId}
+									attendanceData={attendanceData}
+									schedule={scheduleQuery.data ?? []}
+									isLoading={scheduleQuery.isLoading}
+									isProjectionVisible={isProjectionVisible}
+									onToggleProjection={() =>
+										setIsProjectionVisible((prev) => !prev)
+									}
+								/>
+							</div>
+						</Reveal>
 
 						{isProjectionVisible && (
-							<div ref={projectionRef}>
+							<div ref={projectionRef} className="py-4">
 								<Projections
 									token={token}
 									schedule={scheduleQuery.data ?? []}
@@ -216,31 +188,33 @@ function Attendance({
 							</div>
 						)}
 
-						<div id="courses">
-							{/* View Mode Toggle */}
-							<div className="flex items-center justify-end gap-2 mb-6">
-								<Button
-									variant="outline"
-									active={viewMode === "card"}
-									icon={<LayoutGrid size={14} />}
-									hideTextOnMobile
-									onClick={() => setViewMode("card")}
-								>
-									Card View
-								</Button>
-								<Button
-									variant="outline"
-									active={viewMode === "calendar"}
-									icon={<CalendarDays size={14} />}
-									hideTextOnMobile
-									onClick={() => setViewMode("calendar")}
-								>
-									Calendar View
-								</Button>
+						<div id="courses" className="section pb-0">
+							<div className="flex items-center justify-between gap-2 mb-5">
+								<h2 className="section__title mb-0">Courses</h2>
+								<div className="flex items-center gap-1">
+									<Button
+										variant="outline"
+										active={viewMode === "card"}
+										icon={<LayoutGrid size={14} />}
+										hideTextOnMobile
+										onClick={() => setViewMode("card")}
+									>
+										Cards
+									</Button>
+									<Button
+										variant="outline"
+										active={viewMode === "calendar"}
+										icon={<CalendarDays size={14} />}
+										hideTextOnMobile
+										onClick={() => setViewMode("calendar")}
+									>
+										Calendar
+									</Button>
+								</div>
 							</div>
 
 							{viewMode === "card" ? (
-								<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+								<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
 									{filteredCourses.map((course) => (
 										<CourseCard
 											key={course.courseCode}

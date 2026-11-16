@@ -1,31 +1,30 @@
 .btn-brutal {
 	border: 1px solid var(--clay-raised-border);
-	border-radius: var(--clay-radius-pill);
+	border-radius: var(--clay-radius-sm);
 	background: var(--clay-surface-alt);
-	box-shadow: none;
 	font-family: var(--font-sans);
-	letter-spacing: 0.01em;
 	color: var(--clay-text);
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	gap: 0.375rem;
-	padding: 0.5rem 0.75rem;
-	font-size: 0.75rem;
-	font-weight: 700;
+	padding: 0.5rem 0.875rem;
+	font-size: 0.8125rem;
+	font-weight: 500;
 	cursor: pointer;
 	transition:
-		transform 0.2s ease,
 		background-color 0.2s ease,
+		border-color 0.2s ease,
 		color 0.2s ease;
 }
 
-.btn-brutal:hover {
-	transform: translateY(-4px);
+.btn-brutal svg {
+	transition: transform 0.2s ease;
 }
 
-.btn-brutal:active {
-	transform: none;
+.btn-brutal:hover {
+	background: var(--clay-surface);
+	border-color: var(--clay-inset-border);
 }
 
 .btn-brutal:focus {
@@ -33,66 +32,76 @@
 }
 
 .btn-brutal:focus-visible {
-	outline: 3px solid color-mix(in srgb, var(--clay-accent) 35%, transparent);
+	outline: 2px solid color-mix(in srgb, var(--clay-accent) 55%, transparent);
 	outline-offset: 2px;
 }
 
 .btn-brutal:disabled {
 	opacity: 0.5;
 	cursor: not-allowed;
-	transform: none;
 }
 
 .btn-brutal--primary {
-	background: var(--clay-accent);
-	color: #fff;
+	background: var(--clay-ink);
+	border-color: var(--clay-ink);
+	color: var(--clay-ink-contrast);
 	width: 100%;
 	padding: 0.75rem 1rem;
 	font-size: 0.9375rem;
-	border-radius: 0.75rem;
+	border-radius: var(--clay-radius-md);
 }
 
 .btn-brutal--primary:hover {
-	background: color-mix(in srgb, var(--clay-accent) 85%, black);
+	background: color-mix(in srgb, var(--clay-ink) 85%, transparent);
+	border-color: transparent;
+}
+
+.btn-brutal--primary:hover svg,
+.btn-brutal--accent:hover svg {
+	transform: translateX(2px);
+}
+
+.btn-brutal--outline {
+	background: transparent;
 }
 
 .btn-brutal--outline:hover {
-	background: var(--clay-surface);
+	background: var(--clay-tint);
 }
 
-.btn-brutal--outline-active {
-	background: var(--clay-accent);
-	color: #fff;
-}
-
+.btn-brutal--outline-active,
 .btn-brutal--outline-active:hover {
-	background: var(--clay-accent);
+	background: var(--clay-ink);
+	border-color: var(--clay-ink);
+	color: var(--clay-ink-contrast);
 }
 
 .btn-brutal--accent {
-	background: linear-gradient(160deg, #4c94f7 0%, var(--clay-accent) 100%);
-	color: #fff;
+	background: var(--clay-surface);
 	border-color: transparent;
-	border-radius: 0.75rem;
-	padding: 0.75rem 1.25rem;
-	font-size: 0.875rem;
+	border-radius: var(--clay-radius-sm);
+	padding: 0.625rem 1rem;
+	font-size: 0.8125rem;
 }
 
 .btn-brutal--accent:hover {
-	background: linear-gradient(
-		160deg,
-		#3f82e0 0%,
-		color-mix(in srgb, var(--clay-accent) 85%, black) 100%
+	background: color-mix(
+		in srgb,
+		var(--clay-surface) 70%,
+		var(--clay-inset-border)
 	);
+	border-color: transparent;
 }
 
 .btn-brutal--tinted {
 	background: var(--clay-tinted-bg);
+	border-color: transparent;
 	color: var(--clay-tinted-text);
 }
 
 .btn-brutal--tinted:hover {
 	background: var(--clay-tinted-bg-hover);
+	border-color: transparent;
 }
 
 .btn-brutal--plain {
@@ -101,12 +110,13 @@
 	font-weight: 400;
 	color: var(--clay-muted);
 	text-decoration: underline;
+	text-underline-offset: 3px;
 	padding: 0;
 }
 
 .btn-brutal--plain:hover {
+	background: none;
 	color: var(--clay-text);
-	transform: none;
 }
 
 @media (max-width: 352px) {
@@ -115,7 +125,6 @@
 	}
 }
 
-/* Profile action-row gap — matches the app's bespoke (non-standard) breakpoints */
 @media (max-width: 330px) {
 	.gap-responsive {
 		gap: 0.125rem;

@@ -1,13 +1,17 @@
+.docs-page h1,
+.docs-page h2 {
+	margin-top: 1.5em;
+}
+
 .docs-page {
 	margin: 0.5rem;
 	padding: 1.5rem;
-	font-family: system-ui, sans-serif;
+	font-family: var(--font-sans);
 	color: var(--clay-text);
 	line-height: 1.625;
 	border: 1px solid var(--clay-raised-border);
 	border-radius: var(--clay-radius-lg);
 	background: var(--clay-surface-alt);
-	box-shadow: none;
 }
 
 @media (min-width: 640px) {
@@ -18,10 +22,9 @@
 
 .docs-page__back {
 	border: 1px solid var(--clay-raised-border);
-	border-radius: var(--clay-radius-pill);
-	background: var(--clay-surface-alt);
-	box-shadow: none;
-	transition: transform 0.2s ease;
+	border-radius: var(--clay-radius-sm);
+	background: transparent;
+	transition: background-color 0.2s ease;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -33,10 +36,9 @@
 }
 
 .docs-page__back:hover {
-	transform: translateY(-4px);
+	background: var(--clay-tint);
 }
 
 .docs-page__back:active {
-	transform: none;
 	background: var(--clay-surface);
 }

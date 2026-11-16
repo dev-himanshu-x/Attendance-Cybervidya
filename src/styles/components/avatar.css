@@ -18,11 +18,11 @@
 	background: var(--clay-surface);
 	font-size: 0.75rem;
 	color: var(--clay-muted);
-	border: 2px solid #fff;
+	border: 2px solid var(--clay-surface-alt);
 }
 
 .avatar:hover {
-	transform: translateY(-4px);
+	transform: translateY(-2px);
 }
 
 .avatar img {

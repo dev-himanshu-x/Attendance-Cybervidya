@@ -13,7 +13,6 @@
 	border: 1px solid var(--clay-raised-border);
 	border-radius: var(--clay-radius-md);
 	background: var(--clay-surface-alt);
-	box-shadow: none;
 	padding: 0.75rem 1rem;
 	display: flex;
 	align-items: flex-start;
@@ -44,8 +43,8 @@
 
 .toast-brutal__message {
 	flex: 1;
-	font-weight: 700;
-	font-family: system-ui, sans-serif;
+	font-weight: 500;
+	font-family: var(--font-sans);
 }
 
 .toast-brutal__close {
