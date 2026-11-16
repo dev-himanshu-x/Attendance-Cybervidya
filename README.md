@@ -64,7 +64,6 @@ Your password is AES-encrypted client-side before it's sent to CyberVidya's own 
 - **js-cookie** for client-side persistence, **crypto-js** for password encryption, **axios** for HTTP
 - **Biome** for linting/formatting, **Husky + lint-staged** for pre-commit checks
 - **Bun** as the package manager and script runner
-- **Vercel Web Analytics**
 
 ## Project structure
 
