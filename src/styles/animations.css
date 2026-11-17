@@ -35,3 +35,88 @@
 .fade-in-opacity {
 	animation: fadeInOpacity 0.4s ease-out forwards;
 }
+
+@keyframes shimmer {
+	from {
+		background-position: 200% 0;
+	}
+	to {
+		background-position: -200% 0;
+	}
+}
+
+@keyframes slideBar {
+	from {
+		transform: translateX(-100%);
+	}
+	to {
+		transform: translateX(250%);
+	}
+}
+
+.splash {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1.5rem;
+}
+
+.splash__logo {
+	font-size: 2.5rem;
+	background: linear-gradient(
+		100deg,
+		var(--clay-muted) 35%,
+		var(--clay-text) 50%,
+		var(--clay-muted) 65%
+	);
+	background-size: 200% 100%;
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+	animation:
+		fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+		shimmer 2.2s linear infinite;
+}
+
+.splash__logo .site-logo__accent {
+	color: transparent;
+}
+
+.splash__bar {
+	position: relative;
+	width: 7rem;
+	height: 2px;
+	overflow: hidden;
+	background: var(--clay-divider);
+	border-radius: 999px;
+}
+
+.splash__bar::after {
+	content: "";
+	position: absolute;
+	inset: 0 auto 0 0;
+	width: 40%;
+	background: var(--clay-text);
+	border-radius: 999px;
+	animation: slideBar 1.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.splash__logo {
+		background: none;
+		color: var(--clay-text);
+		animation: none;
+	}
+
+	.splash__logo .site-logo__accent {
+		color: var(--clay-muted);
+	}
+
+	.splash__bar::after {
+		animation: none;
+		width: 100%;
+		opacity: 0.4;
+	}
+}

@@ -85,14 +85,11 @@ function App() {
 						onLogout={handleLogout}
 					/>
 				) : isRestoringSession ? (
-					<div
-						className="grow flex items-center justify-center"
-						role="status"
-						aria-label="Loading"
-					>
-						<div className="site-logo fade-in">
+					<div className="splash" role="status" aria-label="Loading">
+						<div className="site-logo splash__logo fade-in">
 							Cyber<span className="site-logo__accent">Vidya</span>
 						</div>
+						<div className="splash__bar" />
 					</div>
 				) : (
 					<LoginForm />
