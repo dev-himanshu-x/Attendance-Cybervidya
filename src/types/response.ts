@@ -104,3 +104,17 @@ export interface ScheduleResponse {
 	data: ScheduleEntry[];
 	message: string;
 }
+
+export interface ExamSession {
+	sessionId: number;
+	sessionName: string;
+}
+
+export interface HallTicketOption {
+	id: number;
+	title: string;
+}
+
+export interface ExamListResponse<T> {
+	data: T[] | null;
+}

@@ -10,13 +10,14 @@ import type {
 	AttendanceComponentInfo,
 	CourseAttendanceInfo,
 } from "../../types/response";
-import Header from "../layout/Header";
+import Header, { type AppPage } from "../layout/Header";
 import Button from "../ui/Button";
 import Modal from "../ui/Modal";
 import Reveal from "../ui/Reveal";
 import CalendarView from "./CalendarView";
 import CourseCard from "./CourseCard";
 import Daywise from "./Daywise";
+import ExamsPage from "./ExamsPage";
 import OverallAtt from "./OverallAtt";
 import Profile from "./Profile";
 import Projections from "./Projections";
@@ -69,6 +70,7 @@ function Attendance({
 		useState<SelectedComponentType | null>(null);
 	const [isDaywiseModalOpen, setIsDaywiseModalOpen] = useState(false);
 	const [isProjectionVisible, setIsProjectionVisible] = useState(false);
+	const [page, setPage] = useState<AppPage>("attendance");
 	const [viewMode, setViewMode] = useState<"card" | "calendar">("card");
 	const projectionRef = useRef<HTMLDivElement>(null);
 
@@ -99,6 +101,11 @@ function Attendance({
 		window.scrollTo({ top: 0, behavior: "instant" });
 	}, []);
 
+	const handlePageChange = useCallback((next: AppPage) => {
+		setPage(next);
+		window.scrollTo({ top: 0, behavior: "instant" });
+	}, []);
+
 	const trimmedSearchQuery = searchQuery.trim();
 	const isSearching = trimmedSearchQuery.length > 0;
 
@@ -118,12 +125,16 @@ function Attendance({
 	return (
 		<div className="grow flex flex-col">
 			<Header
+				page={page}
+				onPageChange={handlePageChange}
 				searchQuery={searchQuery}
 				onSearchChange={onSearchChange}
 				onLogout={onLogout}
 			/>
 			<div className="page">
-				{isSearching ? (
+				{page === "exams" ? (
+					<ExamsPage token={token} studentId={studentId} />
+				) : isSearching ? (
 					<div id="search-results">
 						<h2 className="section__title">
 							Results for "{trimmedSearchQuery}"

@@ -3,13 +3,24 @@ import { LogOut, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import ThemeToggle from "./ThemeToggle";
 
+export type AppPage = "attendance" | "exams";
+
+const NAV_ITEMS: { page: AppPage; label: string }[] = [
+	{ page: "attendance", label: "Attendance" },
+	{ page: "exams", label: "Exams" },
+];
+
 interface HeaderProps {
+	page: AppPage;
+	onPageChange: (page: AppPage) => void;
 	searchQuery: string;
 	onSearchChange: (value: string) => void;
 	onLogout: () => void;
 }
 
 export default function Header({
+	page,
+	onPageChange,
 	searchQuery,
 	onSearchChange,
 	onLogout,
@@ -28,29 +39,49 @@ export default function Header({
 			className={clsx("site-header", isScrolled && "site-header--scrolled")}
 		>
 			<div className="page site-header__inner">
-				<div className="site-logo shrink-0">
-					Cyber<span className="site-logo__accent">Vidya</span>
+				<div className="flex items-center gap-6 sm:gap-12 min-w-0">
+					<div className="site-logo shrink-0">
+						Cyber<span className="site-logo__accent">Vidya</span>
+					</div>
+					<nav className="site-nav" aria-label="Pages">
+						{NAV_ITEMS.map((item) => (
+							<button
+								key={item.page}
+								type="button"
+								className={clsx(
+									"site-nav__link",
+									page === item.page && "site-nav__link--active",
+								)}
+								aria-current={page === item.page ? "page" : undefined}
+								onClick={() => onPageChange(item.page)}
+							>
+								{item.label}
+							</button>
+						))}
+					</nav>
 				</div>
 
 				<div className="flex items-center gap-1 min-w-0">
-					<div className="form-field w-36 sm:w-72 lg:w-96">
-						<span className="form-field__icon">
-							<Search size={15} />
-						</span>
-						<input
-							type="search"
-							placeholder="Search"
-							value={searchQuery}
-							onChange={(e) => onSearchChange(e.target.value)}
-							aria-label="Search courses"
-							className="form-control-brutal form-control-brutal--with-icon-start"
-							style={{
-								height: "2.25rem",
-								padding: "0 0.75rem 0 2.25rem",
-								fontSize: "0.8125rem",
-							}}
-						/>
-					</div>
+					{page === "attendance" && (
+						<div className="form-field w-36 sm:w-72 lg:w-96">
+							<span className="form-field__icon">
+								<Search size={15} />
+							</span>
+							<input
+								type="search"
+								placeholder="Search"
+								value={searchQuery}
+								onChange={(e) => onSearchChange(e.target.value)}
+								aria-label="Search courses"
+								className="form-control-brutal form-control-brutal--with-icon-start"
+								style={{
+									height: "2.25rem",
+									padding: "0 0.75rem 0 2.25rem",
+									fontSize: "0.8125rem",
+								}}
+							/>
+						</div>
+					)}
 					<ThemeToggle />
 					<button
 						type="button"

@@ -14,6 +14,7 @@
 @import "./components/avatar.css";
 @import "./components/toggle-switch.css";
 @import "./components/form.css";
+@import "./components/select.css";
 @import "./components/progress.css";
 @import "./components/auth.css";
 @import "./components/meter.css";
@@ -137,6 +138,29 @@ a:hover {
 .site-logo__accent {
 	font-style: italic;
 	color: var(--clay-muted);
+}
+
+.site-nav {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.site-nav__link {
+	padding: 0.25rem 0;
+	font-size: 0.875rem;
+	color: var(--clay-muted);
+	border-bottom: 2px solid transparent;
+	transition: color 0.2s ease;
+}
+
+.site-nav__link:hover,
+.site-nav__link--active {
+	color: var(--clay-text);
+}
+
+.site-nav__link--active {
+	border-bottom-color: var(--clay-text);
 }
 
 .section {
