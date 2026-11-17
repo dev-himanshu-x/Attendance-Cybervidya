@@ -5,8 +5,8 @@
 	"display": "standalone",
 	"icons": [
 		{
-			"src": "/icons/favicon.png",
-			"sizes": "192x192",
+			"src": "/icons/favicon-144.png",
+			"sizes": "144x144",
 			"type": "image/png",
 			"purpose": "any maskable"
 		}
