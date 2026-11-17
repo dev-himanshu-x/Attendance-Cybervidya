@@ -65,9 +65,11 @@ function App() {
 	}, [queryClient, token, clearToken]);
 
 	const isAuthenticated = !!attendanceQuery.data;
+	const isRestoringSession = !!token && attendanceQuery.isPending;
 	// The dashboard carries its own inline theme toggle in its top bar;
 	// everywhere else (login, terms) gets the floating one.
-	const showFloatingToggle = isTnCVisible || !isAuthenticated;
+	const showFloatingToggle =
+		isTnCVisible || (!isAuthenticated && !isRestoringSession);
 
 	return (
 		<div className="app-shell">
@@ -82,6 +84,16 @@ function App() {
 						onSearchChange={setSearchQuery}
 						onLogout={handleLogout}
 					/>
+				) : isRestoringSession ? (
+					<div
+						className="grow flex items-center justify-center"
+						role="status"
+						aria-label="Loading"
+					>
+						<div className="site-logo fade-in">
+							Cyber<span className="site-logo__accent">Vidya</span>
+						</div>
+					</div>
 				) : (
 					<LoginForm />
 				)}
